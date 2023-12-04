@@ -14,7 +14,9 @@
 
 #define DRIVER_UNIT_NAME "cdfs"
 #define DRIVER_UNIT_VERSION 2
-#define VERSION_STRINGIFY(x) #x
+
+// https://gcc.gnu.org/onlinedocs/gcc-4.8.5/cpp/Stringification.html
+#define VERSION_STRINGIFY(x) STR(x)
 
 
 IRX_ID(MODNAME, 1, 1);
