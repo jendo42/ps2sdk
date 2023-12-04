@@ -42,6 +42,12 @@ IRX_ID(MODNAME, 1, 2);
 #define M_DEBUG(format, args...)
 #endif
 
+#ifdef TRACE
+#define M_TRACE M_PRINTF
+#else
+#define M_TRACE(format, args...)
+#endif
+
 #define TRUE	1
 #define FALSE	0
 
@@ -705,7 +711,7 @@ static void* fileXioRpc_Read(unsigned int* sbuff)
 	int ret;
 	struct fxio_read_packet *packet=(struct fxio_read_packet*)sbuff;
 
-	M_DEBUG("Read Request\n");
+	M_TRACE("Read Request\n");
 	ret=fileXio_Read_RPC(packet->fd, packet->buffer, packet->size, packet->intrData);
 	sbuff[0] = ret;
 	return sbuff;
@@ -721,7 +727,7 @@ static void* fileXioRpc_Write(unsigned int* sbuff)
 	int ret;
 	struct fxio_write_packet *packet=(struct fxio_write_packet*)sbuff;
 
-	M_DEBUG("Write Request\n");
+	M_TRACE("Write Request\n");
 	ret=fileXio_Write_RPC(packet->fd, packet->buffer, packet->size,
                             packet->unalignedDataLen, packet->unalignedData);
 	sbuff[0] = ret;
