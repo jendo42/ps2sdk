@@ -837,6 +837,7 @@ int _McGetInfo(void *rpc_buf)
 			goto dma_transfer;
 
 		mc_free = McGetFreeClusters(dP->port, dP->slot);
+		DPRINTF("_McGetInfo mc_free %d (%X)\n", mc_free, mc_free);
 		if (mc_free >= 0)
 			eP.free = mc_free;
 	}
@@ -888,7 +889,7 @@ int _McGetInfo2(void *rpc_buf)
 
 	if (dP->offset > 0) {
 		mc_free = McGetFreeClusters(dP->port, dP->slot);
-
+		DPRINTF("_McGetInfo2 mc_free %d (%X)\n", mc_free, mc_free);
 		if (mc_free < 0)
 			eP.free = 0;
 		else
