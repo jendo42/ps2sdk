@@ -719,8 +719,9 @@ int _McWrite(void *rpc_buf)
 //--------------------------------------------------------------
 int _McGetDir(void *rpc_buf)
 {
+	const int localMaxent = sizeof(mcserv_buf) / sizeof(sceMcTblGetDir);
 	mcNameParam_t *nP = (mcNameParam_t *)rpc_buf;
-	register int status, file_entries, flags, r;
+	register int status, file_entries, flags;
 	SifDmaTransfer_t dmaStruct;
 	int intStatus;
 
@@ -730,21 +731,19 @@ int _McGetDir(void *rpc_buf)
 	file_entries = 0;
 	flags = nP->flags;
 
-	nP->maxent--;
-
-	while (nP->maxent > -1) {
-
-		r = McGetDir(nP->port, nP->slot, nP->name, flags & 0xffff, 1, (sceMcTblGetDir *)mcserv_buf);
-		if (r < 0)
-			return r;
-		if (r == 0)
-			goto dma_wait;
-
-		file_entries++;
+	int remaining = nP->maxent;
+	while (remaining) {
+		int toProcess = (remaining > localMaxent) ? localMaxent : remaining;
+		int processed = McGetDir(nP->port, nP->slot, nP->name, flags & 0xffff, toProcess, (sceMcTblGetDir *)mcserv_buf);
+		DPRINTF("_McGetDir toProcess %d processed %d\n", toProcess, processed);
+		if (processed < 0) // error
+			return processed;
+		if (processed == 0) // no more items
+			break;
 
 		dmaStruct.src = (void *)mcserv_buf;
 		dmaStruct.dest = (void *)nP->mcT;
-		dmaStruct.size = sizeof (sceMcTblGetDir);
+		dmaStruct.size = sizeof(sceMcTblGetDir) * processed;
 		dmaStruct.attr = 0;
 
 		CpuSuspendIntr(&intStatus);
@@ -752,11 +751,11 @@ int _McGetDir(void *rpc_buf)
 		CpuResumeIntr(intStatus);
 
 		flags = 1;
-		nP->mcT++;
-		nP->maxent--;
+		nP->mcT += processed;
+		file_entries += processed;
+		remaining -= processed;
 	}
 
-dma_wait:
 	if (status == 0)
 		return file_entries;
 
