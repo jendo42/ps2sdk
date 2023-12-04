@@ -368,7 +368,7 @@ int mcGetInfo(int port, int slot, int* type, int* free, int* format)
 	g_pType		= type;
 	g_pFree		= free;
 	g_pFormat	= format;
-	SifWriteBackDCache(endParameter, 192);
+	SifWriteBackDCache(endParameter, sizeof(endParameter));
 
 	// send sif command
 	if((ret = SifCallRpc(&g_cdata, mcRpcCmd[g_mcType][MC_RPCCMD_GET_INFO], SIF_RPC_M_NOWAIT, &g_descParam, sizeof(g_descParam), &g_rdata, 4, (SifRpcEndFunc_t)mcGetInfoApdx, endParameter)) != 0)
@@ -463,7 +463,7 @@ int mcRead(int fd, void *buffer, int size)
 	g_descParam.buffer	= buffer;
 	g_descParam.param	= endParameter;
 	SifWriteBackDCache(buffer, size);
-	SifWriteBackDCache(endParameter, 192);
+	SifWriteBackDCache(endParameter, sizeof(endParameter));
 
 	// send sif command
 	if((ret = SifCallRpc(&g_cdata, mcRpcCmd[g_mcType][MC_RPCCMD_READ], SIF_RPC_M_NOWAIT, &g_descParam, sizeof(g_descParam), &g_rdata, 4, (SifRpcEndFunc_t)mcReadFixAlign, endParameter)) != 0)
