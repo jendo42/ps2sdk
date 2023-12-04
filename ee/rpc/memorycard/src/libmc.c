@@ -19,7 +19,9 @@
 #include <string.h>
 #include "libmc.h"
 
-//#define MC_DEBUG
+#ifdef DEBUG
+#define MC_DEBUG
+#endif
 
 #ifdef MC_DEBUG
 #include <stdio.h>
