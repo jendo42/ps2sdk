@@ -280,7 +280,7 @@ int mcsio2_transfer(int port, int slot, sio2_transfer_data_t *sio2data)
 	register int r;
 	s32 port_ctrl[8];
 
-	DPRINTF("mcsio2_transfer port%d slot%d\n", port, slot);
+	TPRINTF("mcsio2_transfer port%d slot%d\n", port, slot);
 
 	port_ctrl[0] = -1;
 	port_ctrl[1] = -1;
@@ -294,7 +294,7 @@ int mcsio2_transfer(int port, int slot, sio2_transfer_data_t *sio2data)
 	r = sio2_transfer(sio2data);
 	sio2_transfer_reset();
 
-	DPRINTF("mcsio2_transfer returns %d\n", r);
+	TPRINTF("mcsio2_transfer returns %d\n", r);
 
 	return r;
 #else
@@ -303,13 +303,13 @@ int mcsio2_transfer(int port, int slot, sio2_transfer_data_t *sio2data)
 	(void)port;
 	(void)slot;
 
-#ifdef DEBUG
+#ifdef TRACE
 	u8 *p = (u8 *)(sio2data->in_dma.addr);
 	if (p)
-		DPRINTF("mcsio2_transfer port%d slot%d cmd = %02x %02x %02x ", port, slot, p[0], p[1], p[2]);
+		TPRINTF("mcsio2_transfer port%d slot%d cmd = %02x %02x %02x ", port, slot, p[0], p[1], p[2]);
 	else {
 		p = (u8 *)(sio2data->in);
-		DPRINTF("mcsio2_transfer for secrman port%d slot%d cmd = %02x %02x %02x ", port, slot, p[0], p[1], p[2]);
+		TPRINTF("mcsio2_transfer for secrman port%d slot%d cmd = %02x %02x %02x ", port, slot, p[0], p[1], p[2]);
 	}
 #endif
 
@@ -317,7 +317,7 @@ int mcsio2_transfer(int port, int slot, sio2_transfer_data_t *sio2data)
 	sio2_mc_transfer_init();
 	r = sio2_transfer(sio2data);
 
-	DPRINTF("returns %d\n", r);
+	TPRINTF("mcsio2_transfer returns %d\n", r);
 
 	return r;
 #endif
@@ -380,7 +380,7 @@ int secrman_mc_command(int port, int slot, sio2_transfer_data_t *sio2data)
 {
 	register int r;
 
-	DPRINTF("secrman_mc_command port%d slot%d\n", port, slot);
+	TPRINTF("secrman_mc_command port%d slot%d\n", port, slot);
 
 	r = mcsio2_transfer(port, slot, sio2data);
 

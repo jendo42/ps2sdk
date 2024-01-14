@@ -88,6 +88,12 @@
     #endif
 #endif
 
+#ifdef TRACE
+	#define TPRINTF(format, args...) DPRINTF(format, args...)
+#else
+	#define TPRINTF(format, args...)
+#endif
+
 typedef struct _MCCacheDir {
 	int  cluster;   // 0
 	int  fsindex;   // 4
