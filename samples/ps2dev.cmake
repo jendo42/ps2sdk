@@ -53,3 +53,5 @@ SET(CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS "-nostartfiles -Wl,-r -Wl,-d")
 SET(PS2 TRUE)
 SET(PLATFORM_PS2 TRUE)
 SET(EE TRUE)
+
+INCLUDE(${PS2DEV}/share/ccache.cmake)

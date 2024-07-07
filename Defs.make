@@ -51,6 +51,28 @@ OBJCOPY ?= objcopy
 STRIP ?= strip
 
 #
+# ccache support
+#
+CCACHE ?= ccache
+ifeq (, $(shell which $(CCACHE)))
+
+else
+	EE_CC := $(CCACHE) $(EE_CC)
+	EE_CXX := $(CCACHE) $(EE_CXX)
+	EE_AS := $(CCACHE) $(EE_AS)
+	EE_LD := $(CCACHE) $(EE_LD)
+	EE_AR := $(CCACHE) $(EE_AR)
+	IOP_CC := $(CCACHE) $(IOP_CC)
+	IOP_AS := $(CCACHE) $(IOP_AS)
+	IOP_LD := $(CCACHE) $(IOP_LD)
+	IOP_AR := $(CCACHE) $(IOP_AR)
+	CC := $(CCACHE) $(CC)
+	AS := $(CCACHE) $(AS)
+	LD := $(CCACHE) $(LD)
+	AR := $(CCACHE) $(AR)
+endif
+
+#
 # Definitions for local shell operations
 #
 

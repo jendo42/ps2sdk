@@ -28,6 +28,7 @@ release-samples:
 	cp -f Makefile.iopglobal_sample $(SAMPLES_TARGET)/Makefile.iopglobal
 	cp -f ps2dev.cmake $(SHARE_TARGET)/ps2dev.cmake
 	cp -f ps2dev_iop.cmake $(SHARE_TARGET)/ps2dev_iop.cmake
+	cp -f ccache.cmake $(SHARE_TARGET)/ccache.cmake
 
 release-clean:
 	rm -f -r $(SAMPLES_TARGET)
